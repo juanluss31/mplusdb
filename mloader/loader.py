@@ -135,8 +135,9 @@ class MangaLoader:
             title = self._get_title_details(title_id).title
 
             title_name = title.name
-            log.info(f"{title_index}/{manga_num}) Manga: {title_name}")
-            log.info("    Author: %s", title.author)
+            # print(f"{title_index}/{manga_num}) Manga: {title_name}")
+            # print(";",title_name,";",title.author)
+            # print(" ;", title.author)
 
             chapter_num = len(chapters)
             for chapter_index, chapter_id in enumerate(sorted(chapters), 1):
@@ -147,32 +148,33 @@ class MangaLoader:
                     next_chapter if next_chapter.chapter_id != 0 else None
                 )
                 chapter_name = viewer.chapter_name
-                log.info(
-                    f"    {chapter_index}/{chapter_num}) "
-                    f"Chapter {chapter_name}: {chapter.sub_title}"
-                )
-                exporter = self.exporter(
-                    title=title, chapter=chapter, next_chapter=next_chapter
-                )
-                pages = [
-                    p.manga_page for p in viewer.pages if p.manga_page.image_url
-                ]
+                # log.info(
+                    # f"    {chapter_index}/{chapter_num}) "
+                    # f"Chapter {chapter_name}: {chapter.sub_title}"
+                # )
+                print(";",title_name,";",title.author,";",chapter_name,":",chapter.sub_title)
+                # exporter = self.exporter(
+                    # title=title, chapter=chapter, next_chapter=next_chapter
+                # )
+                # pages = [
+                    # p.manga_page for p in viewer.pages if p.manga_page.image_url
+                # ]
 
-                with click.progressbar(
-                    pages, label=chapter_name, show_pos=True
-                ) as pbar:
-                    page_counter = count()
-                    for page_index, page in zip(page_counter, pbar):
-                        if PageType(page.type) == PageType.double:
-                            page_index = range(page_index, next(page_counter))
-                        if not exporter.skip_image(page_index):
-                            # Todo use asyncio + async requests 3
-                            image_blob = self._decrypt_image(
-                                page.image_url, page.encryption_key
-                            )
-                            exporter.add_image(image_blob, page_index)
+                # with click.progressbar(
+                    # pages, label=chapter_name, show_pos=True
+                # ) as pbar:
+                    # page_counter = count()
+                    # for page_index, page in zip(page_counter, pbar):
+                        # if PageType(page.type) == PageType.double:
+                            # page_index = range(page_index, next(page_counter))
+                        # if not exporter.skip_image(page_index):
+                            # # Todo use asyncio + async requests 3
+                            # image_blob = self._decrypt_image(
+                                # page.image_url, page.encryption_key
+                            # )
+                            # exporter.add_image(image_blob, page_index)
 
-                exporter.close()
+                # exporter.close()
 
     def download(
         self,

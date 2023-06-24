@@ -11,6 +11,7 @@ from mloader.exporter import RawExporter, CBZExporter
 from mloader.loader import MangaLoader
 
 log = logging.getLogger()
+sys.tracebacklimit = 0
 
 
 def setup_logging():
@@ -198,12 +199,12 @@ def main(
     chapters: Optional[Set[int]] = None,
     titles: Optional[Set[int]] = None,
 ):
-    click.echo(click.style(about.__doc__, fg="blue"))
+    # click.echo(click.style(about.__doc__, fg="blue"))
     if not any((chapters, titles)):
         click.echo(ctx.get_help())
         return
     end = end or float("inf")
-    log.info("Started export")
+    # log.info("Started export")
 
     exporter = RawExporter if raw else CBZExporter
     exporter = partial(
@@ -220,8 +221,8 @@ def main(
             last_chapter=last,
         )
     except Exception:
-        log.exception("Failed to download manga")
-    log.info("SUCCESS")
+        print("; Failed to download manga")
+    # log.info("SUCCESS")
 
 
 if __name__ == "__main__":
